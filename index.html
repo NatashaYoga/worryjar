@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Worry Jar · Family Yoga Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=Caveat+Brush&family=Space+Mono&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#3e4a44;--sky-top:#0d1a14;--sky-bot:#1a2e24;
+  --grass-a:#2a4a38;--grass-b:#162d22;--grass-c:#3e6754;
+  --accent:#c8973a;--accent2:#e8b84a;--accent-s:rgba(200,151,58,.18);
+  --fg:#f0e6cc;--fg-m:rgba(240,230,204,.62);--fg-d:rgba(240,230,204,.3);
+  --surf:rgba(14,24,20,.9);--surf2:rgba(20,32,26,.95);
+  --rad:16px;--rad-s:10px;
+  --skool:#5b4cdb;
+}
+html,body{background:var(--bg);min-height:100vh;overflow-x:hidden;}
+body{font-family:'Fraunces',Georgia,serif;color:var(--fg);font-size:16px;}
+.sr-only{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;padding-bottom:68px;}
+.screen.active{display:flex;}
+
+/* ── SHARED ── */
+.hdr{width:100%;max-width:440px;display:flex;align-items:center;gap:12px;padding:26px 20px 16px;}
+.back{background:none;border:none;color:var(--fg-m);cursor:pointer;font-size:22px;padding:8px;min-width:44px;min-height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.back:hover{color:var(--fg);background:rgba(240,230,204,.07);}
+.back:focus-visible{outline:2px solid var(--accent);}
+.htitle{font-family:'Caveat Brush',cursive;font-size:28px;color:var(--accent);}
+.wrap{width:100%;max-width:440px;padding:0 20px 40px;display:flex;flex-direction:column;gap:16px;}
+.btn{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.07em;padding:14px 20px;border-radius:12px;border:none;cursor:pointer;min-height:52px;transition:all .18s;text-align:center;width:100%;display:block;}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn:active{transform:scale(.97);}
+.btn-p{background:var(--accent);color:#1a0e04;font-weight:bold;}
+.btn-p:hover{background:#daa84a;}
+.btn-s{background:var(--accent-s);border:1px solid rgba(200,151,58,.35);color:var(--accent);}
+.btn-s:hover{background:rgba(200,151,58,.28);}
+.btn-g{background:none;border:1px solid rgba(240,230,204,.18);color:var(--fg-m);}
+.btn-g:hover{border-color:rgba(240,230,204,.38);color:var(--fg);}
+.btn-skool{background:var(--skool);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-skool:hover{background:#6e5fe0;}
+.flabel{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:7px;}
+.card{background:var(--surf);border:1px solid rgba(240,230,204,.1);border-radius:var(--rad);padding:18px 20px;}
+
+/* ── HOME ── */
+#sh{background:linear-gradient(180deg,#0d1a14 0%,#1a2e24 52%,#162d22 52%);padding:0 0 32px;position:relative;overflow:hidden;}
+#star-c{position:absolute;top:0;left:0;width:100%;height:52%;pointer-events:none;z-index:1;}
+#grass-c{position:absolute;bottom:0;left:0;width:100%;height:50%;pointer-events:none;z-index:1;}
+.home-inner{position:relative;z-index:2;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;padding:28px 20px 0;}
+.title{font-family:'Caveat Brush',cursive;font-size:40px;color:var(--accent);text-align:center;line-height:1.05;margin-bottom:3px;text-shadow:0 2px 20px rgba(200,151,58,.28);}
+.sub{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--fg-m);text-align:center;margin-bottom:18px;max-width:260px;}
+#jar-wrap{position:relative;width:196px;height:244px;margin:0 auto 6px;}
+#jar-svg{width:100%;height:100%;}
+.scount{font-family:'Space Mono',monospace;font-size:11px;color:var(--fg-d);text-align:center;margin-bottom:14px;letter-spacing:.07em;}
+.home-btns{display:flex;flex-direction:column;gap:9px;width:100%;max-width:300px;}
+
+/* streak */
+.streak-bar{display:flex;align-items:center;gap:10px;background:rgba(200,151,58,.1);border:1px solid rgba(200,151,58,.28);border-radius:12px;padding:10px 16px;width:100%;max-width:300px;margin-bottom:2px;}
+.streak-flame{font-size:22px;}
+.streak-text{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.04em;line-height:1.4;}
+.streak-num{font-size:18px;font-weight:bold;}
+
+/* reminder */
+.reminder{background:rgba(200,151,58,.12);border:1px solid rgba(200,151,58,.3);border-radius:12px;padding:11px 15px;font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--accent);display:flex;align-items:flex-start;gap:8px;width:100%;max-width:300px;}
+
+
+
+/* ══ CHECK-IN ══ */
+.ci-streak{display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(200,151,58,.09);border:1px solid rgba(200,151,58,.22);border-radius:30px;padding:8px 18px;margin:0 auto 18px;width:fit-content;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.06em;}
+.ci-streak-num{font-size:18px;font-weight:bold;line-height:1;}
+.ci-date{font-family:'Space Mono',monospace;font-size:10px;color:var(--fg-d);text-align:center;letter-spacing:.1em;margin-bottom:20px;text-transform:uppercase;}
+.ci-card{background:var(--surf);border:1px solid rgba(240,230,204,.1);border-radius:var(--rad);padding:20px 20px 18px;margin-bottom:12px;position:relative;overflow:hidden;transition:border-color .25s;}
+.ci-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s;}
+.ci-card.cactive{border-color:rgba(200,151,58,.35);}.ci-card.cactive::before{opacity:.65;}
+.ci-card.cdone{border-color:rgba(100,200,80,.28);}.ci-card.cdone::before{background:linear-gradient(90deg,transparent,rgba(100,200,80,.45),transparent);opacity:.45;}
+.ci-num{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);opacity:.6;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.ci-q{font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:var(--fg);line-height:1.4;margin-bottom:11px;}
+.ci-q em{font-style:italic;color:var(--accent);}
+.ci-hint{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--fg-m);margin-bottom:13px;line-height:1.5;}
+/* chips */
+.ci-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.ci-chip{background:rgba(240,230,204,.06);border:1.5px solid rgba(240,230,204,.13);border-radius:30px;color:var(--fg-m);font-family:'Fraunces',serif;font-size:14px;padding:8px 14px;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:5px;transition:all .18s;user-select:none;-webkit-user-select:none;}
+.ci-chip:hover{background:rgba(200,151,58,.12);border-color:rgba(200,151,58,.35);color:var(--fg);}
+.ci-chip.on{background:rgba(200,151,58,.18);border-color:rgba(200,151,58,.6);color:var(--accent);}
+.ci-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+/* slider */
+.ci-slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ci-slider-lbl{font-family:'Space Mono',monospace;font-size:10px;color:var(--fg-d);width:48px;text-align:center;flex-shrink:0;line-height:1.3;}
+.ci-slider{flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;outline:none;cursor:pointer;}
+.ci-slider::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--accent);border:3px solid #0e1814;box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;transition:transform .15s;}
+.ci-slider::-webkit-slider-thumb:hover{transform:scale(1.14);}
+.ci-slider:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
+.ci-slider-emoji{font-size:24px;width:36px;text-align:center;flex-shrink:0;}
+.ci-slider-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--fg-d);text-align:center;letter-spacing:.08em;}
+/* practice */
+.ci-pgrid{display:flex;flex-direction:column;gap:8px;}
+.ci-pbtn{background:rgba(240,230,204,.05);border:1.5px solid rgba(240,230,204,.11);border-radius:var(--rad-s);padding:12px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;text-align:left;width:100%;min-height:56px;}
+.ci-pbtn:hover{background:rgba(200,151,58,.09);border-color:rgba(200,151,58,.3);}
+.ci-pbtn.on{background:rgba(200,151,58,.16);border-color:rgba(200,151,58,.55);}
+.ci-pbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.ci-picon{font-size:22px;width:34px;text-align:center;flex-shrink:0;}
+.ci-pname{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--fg);line-height:1.2;}
+.ci-pdesc{font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:var(--fg-m);margin-top:2px;line-height:1.3;}
+/* post / share card */
+.ci-post-card{background:rgba(62,103,84,.2);border:1px solid rgba(100,170,130,.28);border-radius:var(--rad-s);padding:18px;margin-top:4px;}
+.ci-post-lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8ecfa0;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.ci-post-txt{font-family:'Fraunces',serif;font-size:15px;color:var(--fg);line-height:1.7;white-space:pre-wrap;margin-bottom:14px;padding:13px 14px;background:rgba(0,0,0,.2);border-radius:var(--rad-s);border-left:3px solid rgba(200,151,58,.4);}
+.ci-copy-btn{width:100%;background:rgba(62,103,84,.4);border:1px solid rgba(100,170,130,.4);border-radius:var(--rad-s);color:#8ecfa0;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.07em;padding:12px;cursor:pointer;min-height:48px;transition:all .18s;margin-bottom:9px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.ci-copy-btn:hover{background:rgba(62,103,84,.6);}
+.ci-copy-btn:focus-visible{outline:2px solid var(--accent);}
+.ci-open-btn{width:100%;background:rgba(200,151,58,.12);border:1px solid rgba(200,151,58,.28);border-radius:var(--rad-s);color:var(--accent);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.07em;padding:12px;cursor:pointer;min-height:48px;transition:all .18s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;}
+.ci-open-btn:hover{background:rgba(200,151,58,.22);}
+.ci-open-btn:focus-visible{outline:2px solid var(--accent);}
+.ci-copied{font-family:'Space Mono',monospace;font-size:11px;color:#7ecf96;text-align:center;min-height:18px;margin-bottom:8px;}
+/* history */
+.ci-hist-toggle{background:none;border:1px solid rgba(240,230,204,.14);border-radius:30px;color:var(--fg-m);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;padding:10px 20px;cursor:pointer;min-height:44px;display:block;margin:10px auto 0;transition:all .18s;}
+.ci-hist-toggle:hover{border-color:rgba(200,151,58,.4);color:var(--accent);}
+.ci-hist-toggle:focus-visible{outline:2px solid var(--accent);}
+.ci-history{margin-top:14px;}
+.ci-hist-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-d);margin-bottom:12px;text-align:center;}
+.ci-entry{background:var(--surf);border:1px solid rgba(240,230,204,.08);border-radius:var(--rad);padding:15px 17px;margin-bottom:10px;}
+.ci-entry-date{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);opacity:.7;letter-spacing:.1em;margin-bottom:9px;}
+.ci-entry-lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--fg-d);text-transform:uppercase;margin-bottom:2px;}
+.ci-entry-val{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--fg-m);line-height:1.5;margin-bottom:7px;}
+/* closing */
+.ci-closing{text-align:center;padding:22px 16px 6px;}
+.ci-closing-fl{font-family:'Caveat Brush',cursive;font-size:26px;color:var(--accent);margin-bottom:7px;}
+.ci-closing-txt{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--fg-m);line-height:1.65;max-width:280px;margin:0 auto;}
+
+/* ── ADD ── */
+.wtarea{width:100%;background:rgba(240,230,204,.06);border:1px solid rgba(240,230,204,.14);border-radius:12px;color:var(--fg);font-family:'Fraunces',serif;font-size:17px;font-style:italic;line-height:1.55;padding:14px 16px;resize:none;outline:none;min-height:100px;transition:border-color .2s;}
+.wtarea::placeholder{color:var(--fg-d);font-style:italic;}
+.wtarea:focus{border-color:rgba(200,151,58,.5);}
+.cgrid{display:flex;flex-wrap:wrap;gap:10px;}
+.cswatch{width:46px;height:46px;cursor:pointer;border:3px solid transparent;transition:all .18s;position:relative;background:none;padding:0;}
+.cswatch.sel{border-color:var(--fg);transform:scale(1.16);}
+.cswatch:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+.helper{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--fg-m);line-height:1.55;text-align:center;padding:0 8px;}
+
+/* ── CHECK-IN / JOURNAL ── */
+.ci-step{display:none;flex-direction:column;gap:14px;}
+.ci-step.on{display:flex;}
+.bigq{font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:var(--fg);line-height:1.4;}
+.bigq em{font-style:italic;color:var(--accent);}
+.hint{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--fg-m);line-height:1.5;}
+.jarea{width:100%;background:rgba(240,230,204,.06);border:1px solid rgba(240,230,204,.14);border-radius:12px;color:var(--fg);font-family:'Fraunces',serif;font-size:16px;font-style:italic;line-height:1.6;padding:13px 15px;resize:none;outline:none;min-height:90px;transition:border-color .2s;}
+.jarea::placeholder{color:var(--fg-d);font-style:italic;}
+.jarea:focus{border-color:rgba(200,151,58,.5);}
+.body-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.bchip{background:var(--surf);border:1px solid rgba(240,230,204,.14);border-radius:20px;color:var(--fg-m);font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;cursor:pointer;min-height:40px;transition:all .15s;display:flex;align-items:center;}
+.bchip.on{background:var(--accent-s);border-color:rgba(200,151,58,.5);color:var(--accent);}
+.bchip:focus-visible{outline:2px solid var(--accent);}
+.pgrid{display:flex;flex-direction:column;gap:9px;}
+.pbtn{background:var(--surf);border:1.5px solid rgba(240,230,204,.12);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.pbtn:hover{background:rgba(200,151,58,.1);border-color:rgba(200,151,58,.3);}
+.pbtn.on{background:rgba(200,151,58,.18);border-color:rgba(200,151,58,.6);}
+.pbtn:focus-visible{outline:2px solid var(--accent);}
+.picon{font-size:24px;width:38px;text-align:center;flex-shrink:0;}
+.pname{font-family:'Fraunces',serif;font-size:16px;font-weight:500;color:var(--fg);}
+.pdesc{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--fg-m);margin-top:2px;line-height:1.35;}
+
+/* skool post */
+.post-box{background:rgba(91,76,219,.1);border:1px solid rgba(91,76,219,.35);border-radius:var(--rad);padding:18px 20px;}
+.post-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9d90f0;margin-bottom:10px;}
+.post-text{font-family:'Fraunces',serif;font-size:15px;color:var(--fg);line-height:1.65;white-space:pre-wrap;}
+.copied-flash{font-family:'Space Mono',monospace;font-size:11px;color:#7ecf96;text-align:center;height:16px;transition:opacity .3s;}
+
+/* progress dots */
+.prog-dots{display:flex;gap:7px;justify-content:center;margin-bottom:4px;}
+.pdot{width:8px;height:8px;border-radius:50%;background:rgba(240,230,204,.18);transition:background .2s;}
+.pdot.on{background:var(--accent);}
+
+/* ── REVIEW ── */
+.rev-empty{font-family:'Fraunces',serif;font-style:italic;color:var(--fg-m);text-align:center;padding:36px 20px;font-size:17px;line-height:1.65;}
+.scard{background:var(--surf);border:1px solid rgba(240,230,204,.1);border-radius:14px;padding:15px 17px;}
+.scard-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:11px;}
+.sdot{width:32px;height:32px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.swtext{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--fg);line-height:1.4;flex:1;}
+.smeta{font-family:'Space Mono',monospace;font-size:10px;color:var(--fg-d);margin-top:3px;}
+.rchoices{display:flex;gap:6px;flex-wrap:wrap;}
+.rcbtn{flex:1;min-width:78px;font-family:'Space Mono',monospace;font-size:10px;padding:10px 6px;border-radius:10px;border:1px solid rgba(240,230,204,.13);background:none;color:var(--fg-m);cursor:pointer;min-height:44px;transition:all .18s;text-align:center;line-height:1.35;}
+.rcbtn:hover{background:rgba(240,230,204,.07);color:var(--fg);}
+.rcbtn.on{background:var(--accent-s);border-color:rgba(200,151,58,.4);color:var(--accent);}
+.rcbtn.lg{background:rgba(100,190,120,.1);border-color:rgba(100,190,120,.28);color:#7ecf96;}
+.rcbtn.lg.on{background:rgba(100,190,120,.2);}
+.rcbtn:focus-visible{outline:2px solid var(--accent);}
+.wk-note{background:rgba(200,151,58,.1);border:1px solid rgba(200,151,58,.28);border-radius:10px;padding:13px 16px;font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--accent);line-height:1.5;text-align:center;}
+@keyframes crumble{0%{opacity:1;transform:scale(1) rotate(0deg);}50%{opacity:.55;transform:scale(1.06) rotate(5deg);}100%{opacity:0;transform:scale(.05) rotate(28deg) translateY(24px);}}
+.crumbling{animation:crumble .65s ease forwards;}
+
+/* ── ZAP ── */
+#sz{background:#0d1a14;padding:0;overflow:hidden;position:relative;}
+#zc{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
+.zhud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:18px 20px 0;z-index:10;pointer-events:none;}
+.zbox{display:flex;flex-direction:column;}
+.zbox.r{align-items:flex-end;}
+.zlbl{font-family:'Space Mono',monospace;font-size:9px;color:rgba(200,151,58,.55);letter-spacing:.1em;text-transform:uppercase;}
+.zval{font-family:'Space Mono',monospace;font-size:30px;color:var(--accent);line-height:1;}
+.zval.urgent{color:#e07070;animation:zpulse .5s ease-in-out infinite alternate;}
+@keyframes zpulse{from{opacity:1}to{opacity:.45}}
+.zov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;background:rgba(10,18,14,.93);padding:26px 22px;text-align:center;}
+.ztitle{font-family:'Caveat Brush',cursive;font-size:36px;color:var(--accent);margin-bottom:8px;line-height:1.1;}
+.zdesc{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--fg-m);margin-bottom:22px;max-width:280px;line-height:1.55;}
+.zfscore{font-family:'Space Mono',monospace;font-size:54px;color:var(--accent);margin:6px 0;}
+.zmsg{font-family:'Fraunces',serif;font-size:18px;font-style:italic;color:var(--fg-m);margin-bottom:18px;max-width:280px;line-height:1.6;}
+.zbtns{display:flex;flex-direction:column;gap:9px;width:100%;max-width:280px;}
+.lb{background:rgba(200,151,58,.09);border:1px solid rgba(200,151,58,.24);border-radius:12px;padding:14px 17px;margin-bottom:14px;width:100%;max-width:280px;}
+.lb-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin-bottom:11px;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(240,230,204,.07);}
+.lb-row:last-child{border-bottom:none;}
+.lb-rank{font-family:'Space Mono',monospace;font-size:11px;color:var(--fg-d);width:22px;}
+.lb-name{font-family:'Fraunces',serif;font-size:15px;color:var(--fg);flex:1;}
+.lb-score{font-family:'Space Mono',monospace;font-size:14px;color:var(--accent);}
+.lb-empty{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--fg-d);}
+.ni-row{display:flex;gap:8px;align-items:center;width:100%;max-width:280px;margin-bottom:8px;}
+.ni{flex:1;background:rgba(240,230,204,.08);border:1px solid rgba(240,230,204,.18);border-radius:10px;color:var(--fg);font-family:'Fraunces',serif;font-size:15px;padding:11px 14px;outline:none;min-height:48px;}
+.ni::placeholder{color:var(--fg-d);font-style:italic;}
+.ni:focus{border-color:rgba(200,151,58,.5);}
+
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,18,14,.97);border-top:1px solid rgba(240,230,204,.1);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.nb{flex:1;background:none;border:none;cursor:pointer;padding:9px 4px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .18s;min-height:54px;}
+.nb:focus-visible{outline:2px solid var(--accent);}
+.ni2{font-size:20px;line-height:1;}
+.nl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.05em;color:var(--fg-d);transition:color .18s;}
+.nb.on .nl,.nb:hover .nl{color:var(--accent);}
+
+.jarchip{background:var(--surf);border:1.5px solid rgba(240,230,204,.13);border-radius:12px;color:var(--fg-m);font-family:'Fraunces',serif;font-size:15px;padding:14px 18px;cursor:pointer;min-height:52px;transition:all .2s;text-align:left;width:100%;}
+.jarchip:hover{background:rgba(200,151,58,.1);border-color:rgba(200,151,58,.3);color:var(--fg);}
+.jarchip.on{background:rgba(200,151,58,.18);border-color:rgba(200,151,58,.6);color:var(--accent);}
+.jarchip:focus-visible{outline:2px solid var(--accent);}
+/* ── ANIMS ── */
+@keyframes fu{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fu .4s ease both;}
+@media(prefers-reduced-motion:reduce){.fu{animation:none!important}.zval.urgent{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="sr-only" aria-live="polite" id="ann"></div>
+
+<!-- ══ HOME ══ -->
+<div id="shome" class="screen active" role="main" aria-label="Worry Jar home">
+  <canvas id="star-c" aria-hidden="true"></canvas>
+  <canvas id="grass-c" aria-hidden="true"></canvas>
+  <div class="home-inner">
+    <h1 class="title">The Worry Jar</h1>
+    <p class="sub">Every feeling deserves a place to rest</p>
+    <div id="streak-bar" class="streak-bar" aria-live="polite"></div>
+    <div id="reminder" style="display:none" class="reminder" role="alert"></div>
+    <div id="jar-wrap" aria-label="Your worry jar" role="img">
+      <svg id="jar-svg" viewBox="0 0 196 244" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="jclip">
+            <path d="M37,57 Q35,61 33,77 L25,225 Q25,243 98,243 Q171,243 171,225 L163,77 Q161,61 159,57 Z"/>
+          </clipPath>
+          <linearGradient id="rimG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6a3e0a"/>
+            <stop offset="25%" stop-color="#c8973a"/>
+            <stop offset="52%" stop-color="#ecc055"/>
+            <stop offset="78%" stop-color="#c8973a"/>
+            <stop offset="100%" stop-color="#6a3e0a"/>
+          </linearGradient>
+          <radialGradient id="glassG" cx="26%" cy="20%" r="68%">
+            <stop offset="0%" stop-color="rgba(255,245,210,.17)"/>
+            <stop offset="100%" stop-color="rgba(255,245,210,.01)"/>
+          </radialGradient>
+          <filter id="rocky">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+        <!-- jar body -->
+        <path d="M37,57 Q35,61 33,77 L25,225 Q25,243 98,243 Q171,243 171,225 L163,77 Q161,61 159,57 Z"
+          fill="rgba(155,135,85,.08)" stroke="rgba(185,160,95,.3)" stroke-width="1.5"/>
+        <!-- stones -->
+        <g id="sg" clip-path="url(#jclip)"></g>
+        <!-- glass shine -->
+        <path d="M37,57 Q35,61 33,77 L25,225 Q25,243 98,243 Q171,243 171,225 L163,77 Q161,61 159,57 Z"
+          fill="url(#glassG)" pointer-events="none"/>
+        <!-- edge highlight -->
+        <path d="M37,70 L31,215" stroke="rgba(255,245,210,.09)" stroke-width="3" stroke-linecap="round"/>
+        <!-- rim -->
+        <rect x="46" y="41" width="104" height="20" rx="5" fill="url(#rimG)" stroke="#5a3408" stroke-width="1"/>
+        <rect x="54" y="46" width="88" height="8" rx="4" fill="rgba(255,228,155,.2)"/>
+        <rect x="57" y="42" width="32" height="4" rx="2" fill="rgba(255,240,175,.26)"/>
+        <!-- empty hint -->
+        <text id="jel" x="98" y="170" text-anchor="middle" font-family="Fraunces,serif"
+          font-style="italic" font-size="12" fill="rgba(240,230,204,.2)">your worries rest here</text>
+      </svg>
+    </div>
+    <p class="scount" id="scnt"></p>
+    <div class="home-btns">
+      <button class="btn btn-p" onclick="go('add')">Drop a worry in</button>
+      <button class="btn btn-s" onclick="go('ci')">🌿 Check-in &amp; Journal</button>
+      <button class="btn btn-g" onclick="go('rev')">Open the jar</button>
+      <button class="btn btn-g" onclick="go('zap')">⚡ Zap the Worries</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD ══ -->
+<div id="sadd" class="screen" role="main" aria-label="Add a worry">
+  <div class="hdr">
+    <button class="back" onclick="go('home')" aria-label="Back">←</button>
+    <h2 class="htitle">Drop a worry in</h2>
+  </div>
+  <div class="wrap">
+    <p class="helper fu">"All feelings are welcome here — big, small, or hard to name — even the ones that are tricky to put into words."</p>
+    <div>
+      <div class="flabel">What's the worry?</div>
+      <textarea class="wtarea" id="wtxt" placeholder="Write it here… say it out loud and type it together" rows="5" aria-label="Describe the worry"></textarea>
+    </div>
+    <div>
+      <div class="flabel">Pick a colour for this stone</div>
+      <div class="cgrid" id="cgrid" role="radiogroup" aria-label="Stone colour"></div>
+    </div>
+    <button class="btn btn-p" onclick="dropWorry()">Drop it in the jar ✦</button>
+  </div>
+</div>
+
+<!-- ══ CHECK-IN ══ -->
+<div id="sci" class="screen" role="main" aria-label="Daily check-in">
+  <div class="hdr">
+    <button class="back" onclick="go('home')" aria-label="Back">←</button>
+    <h2 class="htitle">Check-in</h2>
+  </div>
+  <div class="wrap" id="ci-wrap"></div>
+</div>
+
+<!-- ══ REVIEW ══ -->
+<div id="srev" class="screen" role="main" aria-label="Review worries">
+  <div class="hdr">
+    <button class="back" onclick="go('home')" aria-label="Back">←</button>
+    <h2 class="htitle">Open the jar</h2>
+  </div>
+  <div class="wrap" id="revwrap"></div>
+</div>
+
+<!-- ══ ZAP ══ -->
+<div id="szap" class="screen" role="main" aria-label="Zap the Worries game">
+  <canvas id="zc" aria-hidden="true"></canvas>
+  <div class="zhud" aria-hidden="true">
+    <div class="zbox">
+      <div class="zlbl">zapped</div>
+      <div class="zval" id="zsd">0</div>
+    </div>
+    <div class="zbox r">
+      <div class="zlbl">time</div>
+      <div class="zval" id="ztd">0:30</div>
+    </div>
+  </div>
+  <div class="zov" id="zov">
+    <div class="ztitle" id="zovt">Zap the Worries!</div>
+    <div class="zdesc" id="zovd">Tap every stone before the time runs out. 30 seconds. Go!</div>
+    <div class="zfscore" id="zfs" style="display:none"></div>
+    <div class="zmsg" id="zfm" style="display:none"></div>
+    <div class="lb" id="lbdisp"></div>
+    <div class="ni-row" id="nirow" style="display:none">
+      <input class="ni" id="pname" type="text" placeholder="Your name…" maxlength="16" aria-label="Name for leaderboard"/>
+      <button class="btn btn-p" style="width:auto;min-width:74px;min-height:48px;font-size:11px" onclick="saveScore()">Save</button>
+    </div>
+    <div class="zbtns">
+      <button class="btn btn-p" id="zmb" onclick="startZap()">Let's go! ⚡</button>
+      <button class="btn btn-g" onclick="go('home')">← Back to jar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="nav" aria-label="Main navigation">
+  <button class="nb on" id="nh" onclick="go('home')" aria-label="Home">
+    <span class="ni2">🫙</span><span class="nl">Jar</span>
+  </button>
+  <button class="nb" id="nci" onclick="go('ci')" aria-label="Check-in">
+    <span class="ni2">🌿</span><span class="nl">Check-in</span>
+  </button>
+  <button class="nb" id="nrev" onclick="go('rev')" aria-label="Review">
+    <span class="ni2">🔍</span><span class="nl">Review</span>
+  </button>
+  <button class="nb" id="nzap" onclick="go('zap')" aria-label="Zap game">
+    <span class="ni2">⚡</span><span class="nl">Zap</span>
+  </button>
+</nav>
+
+<script>
+// ═══ STORAGE ═══
+const SK='wj5';
+function ld(){try{return JSON.parse(localStorage.getItem(SK))||df();}catch{return df();}}
+function df(){return{stones:[],lastReview:null,leaderboard:[],streak:0,lastActivity:null,calStart:Date.now()};}
+function sv(){try{localStorage.setItem(SK,JSON.stringify(D));}catch{}}
+let D=ld();
+
+function ann(m){const e=document.getElementById('ann');e.textContent='';setTimeout(()=>e.textContent=m,55);}
+
+// ═══ AUDIO ═══
+let AC=null;
+function gac(){if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}return AC;}
+
+function clink(pitch=1){
+  const a=gac();if(!a)return;
+  const sr=a.sampleRate;
+  const buf=a.createBuffer(1,sr*.9,sr);
+  const d=buf.getChannelData(0);
+  const f1=1800*pitch, f2=f1*1.52, f3=f1*2.03;
+  for(let i=0;i<d.length;i++){
+    const t=i/sr;
+    // sharp glass transient
+    const trans=t<.002?t/.002:0;
+    const env=Math.exp(-t*22);
+    const ring=Math.exp(-t*7);
+    const ring2=Math.exp(-t*11);
+    d[i]=(
+      Math.sin(2*Math.PI*f1*t)*ring*.28+
+      Math.sin(2*Math.PI*f2*t)*ring2*.14+
+      Math.sin(2*Math.PI*f3*t)*Math.exp(-t*16)*.07+
+      (Math.random()-.5)*env*.06+
+      (Math.random()-.5)*trans*.18
+    )*.55;
+  }
+  const src=a.createBufferSource();
+  src.buffer=buf;
+  const g=a.createGain();g.gain.value=.9;
+  src.connect(g);g.connect(a.destination);
+  src.start();
+}
+
+function zapSnd(){
+  const a=gac();if(!a)return;
+  const o=a.createOscillator(),g=a.createGain(),dw=a.createWaveShaper();
+  const c=new Float32Array(256);for(let i=0;i<256;i++){const x=i*2/256-1;c[i]=x*(Math.abs(x)+.2)/1.2;}
+  dw.curve=c;o.connect(dw);dw.connect(g);g.connect(a.destination);
+  o.type='sawtooth';o.frequency.setValueAtTime(260+Math.random()*80,a.currentTime);
+  o.frequency.exponentialRampToValueAtTime(55,a.currentTime+.15);
+  g.gain.setValueAtTime(.18,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.22);
+  o.start();o.stop(a.currentTime+.24);
+}
+
+function winSnd(){
+  const a=gac();if(!a)return;
+  [440,554,659,880].forEach((f,i)=>{
+    const o=a.createOscillator(),g=a.createGain();
+    o.connect(g);g.connect(a.destination);o.type='triangle';o.frequency.value=f;
+    const t=a.currentTime+i*.1;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.11,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+.42);
+    o.start(t);o.stop(t+.46);
+  });
+}
+
+// ═══ COLOURS ═══
+const COLS=[
+  {c:'#6b7b5a',label:'forest stone'},
+  {c:'#7a6e52',label:'sandstone'},
+  {c:'#526070',label:'slate'},
+  {c:'#7a5a52',label:'red rock'},
+  {c:'#687258',label:'mossy grey'},
+  {c:'#5a6a78',label:'river stone'},
+  {c:'#726050',label:'warm granite'},
+  {c:'#5e5068',label:'twilight stone'},
+];
+
+// ═══ ROCK DRAWING ═══
+// Creates a convincingly irregular rock polygon
+function rockPts(cx,cy,rx,ry,seed){
+  const n=8+(seed%5);
+  const pts=[];
+  for(let i=0;i<n;i++){
+    const frac=i/n;
+    const angle=frac*Math.PI*2;
+    // vary radius with multiple harmonics for irregular shape
+    const r=(rx*(.58
+      +.22*Math.sin(seed*1.7+i*2.3)
+      +.13*Math.cos(seed*2.9+i*1.1)
+      +.08*Math.sin(seed*.7+i*3.7)
+    ));
+    const rY=ry*(.62
+      +.18*Math.cos(seed*2.1+i*1.9)
+      +.09*Math.sin(seed*3.3+i*2.7)
+    );
+    pts.push([cx+r*Math.cos(angle),cy+rY*Math.sin(angle)]);
+  }
+  // flatten bottom so stones look settled
+  const maxY=Math.max(...pts.map(p=>p[1]));
+  pts.forEach(p=>{if(p[1]>cy+ry*.3)p[1]=cy+ry*.3+(p[1]-cy-ry*.3)*.55;});
+  return pts;
+}
+
+function ptsToSVG(pts){
+  return pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('')+'Z';
+}
+function ptsToCanvas(ctx,pts){
+  ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();
+}
+
+function darken(hex,f){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`rgb(${Math.round(r*f)},${Math.round(g*f)},${Math.round(b*f)})`;
+}
+function lighten(hex,f){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`rgb(${Math.min(255,Math.round(r+(255-r)*f))},${Math.min(255,Math.round(g+(255-g)*f))},${Math.min(255,Math.round(b+(255-b)*f))})`;
+}
+
+// SVG rock with facets and texture marks
+function makeSVGRock(cx,cy,rx,ry,seed,col){
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  const pts=rockPts(cx,cy,rx,ry,seed);
+  const d=ptsToSVG(pts);
+  // shadow
+  const sh=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+  sh.setAttribute('cx',cx+1.5);sh.setAttribute('cy',cy+ry*.58);
+  sh.setAttribute('rx',rx*.75);sh.setAttribute('ry',ry*.28);
+  sh.setAttribute('fill','rgba(0,0,0,.32)');
+  g.appendChild(sh);
+  // main body
+  const body=document.createElementNS('http://www.w3.org/2000/svg','path');
+  body.setAttribute('d',d);body.setAttribute('fill',col);
+  body.setAttribute('stroke',darken(col,.62));body.setAttribute('stroke-width','.9');
+  g.appendChild(body);
+  // inner facet — angular crack line
+  const f1=document.createElementNS('http://www.w3.org/2000/svg','line');
+  const fa=seed*.8;
+  f1.setAttribute('x1',(cx-rx*.28+Math.cos(fa)*rx*.2).toFixed(1));
+  f1.setAttribute('y1',(cy-ry*.08).toFixed(1));
+  f1.setAttribute('x2',(cx+rx*.22+Math.cos(fa+1.2)*rx*.15).toFixed(1));
+  f1.setAttribute('y2',(cy+ry*.28).toFixed(1));
+  f1.setAttribute('stroke',darken(col,.55));f1.setAttribute('stroke-width','.7');f1.setAttribute('opacity','.55');
+  g.appendChild(f1);
+  // secondary texture scratch
+  const f2=document.createElementNS('http://www.w3.org/2000/svg','line');
+  f2.setAttribute('x1',(cx+rx*.05).toFixed(1));f2.setAttribute('y1',(cy-ry*.22).toFixed(1));
+  f2.setAttribute('x2',(cx-rx*.18).toFixed(1));f2.setAttribute('y2',(cy+ry*.1).toFixed(1));
+  f2.setAttribute('stroke',darken(col,.6));f2.setAttribute('stroke-width','.5');f2.setAttribute('opacity','.38');
+  g.appendChild(f2);
+  // dull highlight patch (not shiny — rocks are matte)
+  const hlPts=rockPts(cx-rx*.2,cy-ry*.18,rx*.26,ry*.2,seed+11);
+  const hl=document.createElementNS('http://www.w3.org/2000/svg','path');
+  hl.setAttribute('d',ptsToSVG(hlPts));hl.setAttribute('fill',lighten(col,.22));hl.setAttribute('opacity','.35');
+  g.appendChild(hl);
+  // grit dots
+  for(let i=0;i<4;i++){
+    const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const dx=cx+(Math.sin(seed*1.3+i*2.1))*(rx*.35);
+    const dy=cy+(Math.cos(seed*2.7+i*1.8))*(ry*.3);
+    dot.setAttribute('cx',dx.toFixed(1));dot.setAttribute('cy',dy.toFixed(1));
+    dot.setAttribute('r','.7');dot.setAttribute('fill',darken(col,.5));dot.setAttribute('opacity','.45');
+    g.appendChild(dot);
+  }
+  return g;
+}
+
+// ═══ NAV ═══
+const NAVMAP={home:'nh',add:'nh',ci:'nci',rev:'nrev',zap:'nzap'};
+const HIDENAV=new Set(['zap']);
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+id).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const nb=document.getElementById(NAVMAP[id]);if(nb)nb.classList.add('on');
+  document.querySelector('.nav').style.display=HIDENAV.has(id)?'none':'flex';
+  if(id==='home')renderHome();
+  if(id==='add')initAdd();
+  if(id==='ci')initCI();
+  if(id==='rev')renderRev();
+  if(id==='zap')initZap();
+}
+
+// ═══ STARS ═══
+function drawStars(){
+  const c=document.getElementById('star-c');if(!c)return;
+  c.width=c.offsetWidth;c.height=c.offsetHeight;
+  const x=c.getContext('2d');
+  for(let i=0;i<120;i++){
+    const px=Math.random()*c.width,py=Math.random()*c.height,r=Math.random()*1.4+.2;
+    x.beginPath();x.arc(px,py,r,0,Math.PI*2);
+    x.fillStyle=`rgba(255,245,210,${Math.random()*.75+.18})`;x.fill();
+  }
+}
+
+// ═══ GRASS SCENE ═══
+function drawGrass(){
+  const c=document.getElementById('grass-c');if(!c)return;
+  c.width=c.offsetWidth;c.height=c.offsetHeight;
+  const ctx=c.getContext('2d'),w=c.width,h=c.height;
+  // base ground
+  const g=ctx.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#3e6754');g.addColorStop(1,'#1e3028');
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+  // grass blades — varied heights and lean
+  const bladeData=[];
+  for(let i=0;i<120;i++){
+    bladeData.push({x:Math.random()*w,y:8+Math.random()*(h*.38),h:9+Math.random()*20,lean:(Math.random()-.5)*10,col:Math.random()>.5?'#3e6754':'#1f3d11'});
+  }
+  bladeData.forEach(({x,y,h:bh,lean,col})=>{
+    ctx.strokeStyle=col;ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(x,y);
+    ctx.quadraticCurveTo(x+lean,y-bh*.55,x+lean*1.4+(Math.random()*6-3),y-bh);
+    ctx.stroke();
+  });
+  // darker under-grass
+  for(let i=0;i<50;i++){
+    const x=Math.random()*w,y=10+Math.random()*(h*.28);
+    ctx.strokeStyle='#1e3028';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+(Math.random()*5-2.5),y-(5+Math.random()*10));ctx.stroke();
+  }
+  // tiny pebbles on soil
+  for(let i=0;i<18;i++){
+    const px=Math.random()*w,py=h*.5+Math.random()*(h*.45);
+    const pr=1.5+Math.random()*3.5;
+    ctx.fillStyle=`rgba(110,88,60,${.28+Math.random()*.25})`;
+    ctx.beginPath();ctx.ellipse(px,py,pr,pr*.62,Math.random()*Math.PI,0,Math.PI*2);ctx.fill();
+  }
+}
+
+// ═══ HOME ═══
+function renderHome(){
+  drawStars();drawGrass();
+  renderJar();updateSCnt();
+  renderStreak();checkReminder();
+}
+
+function renderStreak(){
+  const s=document.getElementById('streak-bar');
+  const today=dayKey(Date.now());
+  // check if already active today
+  const n=D.streak||0;
+  if(n===0){s.innerHTML=`<span class="streak-flame">🌱</span><span class="streak-text">Start your streak — drop a worry or do a check-in today.</span>`;return;}
+  const last=D.lastActivity;
+  const daysSince=last?Math.floor((Date.now()-last)/86400000):999;
+  if(daysSince>1&&n>0){
+    // streak broken
+    s.innerHTML=`<span class="streak-flame">💤</span><span class="streak-text">Streak paused at <span class="streak-num">${n}</span>. Come back today to keep it going.</span>`;
+    return;
+  }
+  s.innerHTML=`<span class="streak-flame">🔥</span><span class="streak-text"><span class="streak-num">${n}</span> day${n===1?'':'s'} in a row — you keep showing up.</span>`;
+}
+
+function checkReminder(){
+  const r=document.getElementById('reminder');
+  const days=D.lastReview?Math.floor((Date.now()-D.lastReview)/86400000):999;
+  const active=D.stones.filter(s=>s.status!=='gone').length;
+  if(days>=7&&active>0){
+    r.style.display='flex';r.innerHTML=`<span>🫙</span> It's been ${days===999?'a while':days+' days'} since you opened the jar together. Time for a look inside?`;
+  } else if(active>=4&&days>=5){
+    r.style.display='flex';r.innerHTML=`<span>🫙</span> ${active} worries are resting in there — open the jar when you're ready.`;
+  } else {r.style.display='none';}
+}
+
+function renderJar(){
+  const stones=D.stones.filter(s=>s.status!=='gone');
+  document.getElementById('jel').style.opacity=stones.length?'0':'1';
+  const g=document.getElementById('sg');g.innerHTML='';
+  const vis=stones.slice(-15);if(!vis.length)return;
+  const rows=Math.ceil(vis.length/3);
+  vis.forEach((s,i)=>{
+    const row=Math.floor(i/3),col=i%3;
+    const bx=40,bw=114,by=228,bh=148;
+    const cx=bx+col*(bw/3)+(bw/6)+(Math.sin(s.id*.73)*7);
+    const cy=by-row*(bh/Math.max(rows,3))-(Math.cos(s.id*1.13)*5);
+    const rx=13+((s.id%4)*1.5);
+    const rock=makeSVGRock(cx,cy,rx,rx*.72,s.id%97,s.colour);
+    g.appendChild(rock);
+  });
+}
+
+function updateSCnt(){
+  const n=D.stones.filter(s=>s.status!=='gone').length;
+  document.getElementById('scnt').textContent=n===0?'The jar is empty — all is quiet':`${n} ${n===1?'worry':'worries'} resting inside`;
+}
+
+// ═══ ADD WORRY ═══
+let selCol=COLS[0].c;
+function initAdd(){
+  document.getElementById('wtxt').value='';selCol=COLS[0].c;
+  buildCGrid();setTimeout(()=>document.getElementById('wtxt').focus(),80);
+}
+function buildCGrid(){
+  const g=document.getElementById('cgrid');g.innerHTML='';
+  COLS.forEach(({c,label},i)=>{
+    const btn=document.createElement('button');
+    btn.className='cswatch'+(i===0?' sel':'');
+    // draw mini rock SVG as swatch
+    const svgNS='http://www.w3.org/2000/svg';
+    const svg=document.createElementNS(svgNS,'svg');
+    svg.setAttribute('viewBox','0 0 46 46');svg.setAttribute('width','46');svg.setAttribute('height','46');
+    const rock=makeSVGRock(23,24,17,12,i*13+7,c);
+    svg.appendChild(rock);
+    btn.appendChild(svg);
+    btn.setAttribute('aria-label',label);btn.setAttribute('role','radio');btn.setAttribute('aria-checked',i===0?'true':'false');
+    btn.onclick=()=>{
+      selCol=c;
+      g.querySelectorAll('.cswatch').forEach(b=>{b.classList.remove('sel');b.setAttribute('aria-checked','false');});
+      btn.classList.add('sel');btn.setAttribute('aria-checked','true');
+    };
+    btn.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();btn.click();}};
+    g.appendChild(btn);
+  });
+}
+function dropWorry(){
+  const txt=document.getElementById('wtxt').value.trim();
+  if(!txt){document.getElementById('wtxt').focus();return;}
+  D.stones.push({id:Date.now(),text:txt,colour:selCol,
+    date:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),status:'here'});
+  markActivity();
+  clink(.88+Math.random()*.28);
+  ann('Worry dropped into the jar.');
+  const j=document.getElementById('jar-wrap');
+  if(j){j.style.transform='scale(1.06) rotate(-1.5deg)';setTimeout(()=>j.style.transform='',300);}
+  go('home');
+}
+
+// ═══ SHARED UTILITIES ═══
+function dayKey(ts){
+  const d=new Date(ts);
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+function markActivity(){
+  const today=dayKey(Date.now());
+  const yesterday=dayKey(Date.now()-86400000);
+  const lastDay=D.lastActivity?dayKey(D.lastActivity):null;
+  if(lastDay===today){/* already counted */}
+  else if(lastDay===yesterday){D.streak=(D.streak||0)+1;}
+  else{D.streak=1;}
+  D.lastActivity=Date.now();
+  sv();
+}
+
+// ═══ CHECK-IN / JOURNAL ═══
+const CI_FEELINGS=[
+  {e:'⚡',l:'Energised'},{e:'🌊',l:'Calm'},{e:'🌀',l:'Fizzy / restless'},
+  {e:'🪨',l:'Heavy'},{e:'🎈',l:'Light'},{e:'🌪️',l:'Wobbly'},
+  {e:'💪',l:'Strong'},{e:'😴',l:'Tired'},{e:'🌫️',l:'Foggy'},
+  {e:'🔥',l:'Fired up'},{e:'🫶',l:'Warm'},{e:'❓',l:'Hard to say'},
+];
+const CI_PRACTICES=[
+  {id:'games',    icon:'🎉', name:'Diving into the Yoga Games Library', desc:'High energy, calm, sensory & mindfulness — something for every mood'},
+  {id:'guided',   icon:'🧘', name:'Guided Family Yoga',                 desc:'A full practice to follow along together'},
+  {id:'nidra',    icon:'🌙', name:'Yoga Nidra',                        desc:'Lie down together for a deep guided rest'},
+  {id:'breath',   icon:'🌬️', name:'Breathing Practice',                desc:'Simple techniques to settle the nervous system'},
+  {id:'challenge',icon:'🏆', name:'A Challenge or Programme',           desc:'One of the Family Yoga Club challenges or programmes'},
+  {id:'rec',      icon:'💛', name:"Surprise me — open to suggestions",  desc:'Share in the community and see what comes back'},
+  {id:'none',     icon:'🌙', name:'Nothing today — just resting',       desc:'Rest is a practice too'},
+  {id:'other',    icon:'✨', name:'Something else',                     desc:'We have our own thing planned today'},
+];
+
+const CIKEY='fyc-ci-v4';
+function ciLoad(){try{return JSON.parse(localStorage.getItem(CIKEY))||{entries:[],streak:0,lastDay:null};}catch{return{entries:[],streak:0,lastDay:null};}}
+function ciSave(d){try{localStorage.setItem(CIKEY,JSON.stringify(d));}catch{}}
+
+// ── state ──
+let ciD=ciLoad();
+let ciA={chips:[],energy:5,mind:'',notice:'',practice:''};
+let ciHistory=false;
+
+function ciTodayStr(){return new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function ciTodayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function ciYestKey(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+
+function initCI(){
+  ciD=ciLoad();
+  ciA={chips:[],energy:5,mind:'',notice:'',practice:''};
+  ciHistory=false;
+  ciRender();
+}
+
+// ── RENDER — builds HTML once, then wires events imperatively ──
+function ciRender(){
+  const wrap=document.getElementById('ci-wrap');
+  if(!wrap)return;
+
+  const streak=ciD.streak||0;
+  const practiceSelected=!!ciA.practice;
+
+  // build post text
+  const feelings=ciA.chips.length?ciA.chips.join(', '):'not sure yet';
+  const energyTxt=ciA.energy+'/10';
+  const noticeTxt=ciA.notice.trim();
+  const pr=CI_PRACTICES.find(x=>x.id===ciA.practice);
+  const wantsRec=ciA.practice==='rec';
+  let postTxt='Hi everyone! 👋\n\nWe just did our Family Yoga Club check-in.\n\n';
+  postTxt+='⚡ Energy today: '+energyTxt+'\n';
+  postTxt+='🫀 How we feel: '+feelings+'\n';
+  if(noticeTxt)postTxt+='✨ Something we noticed: '+noticeTxt+'\n';
+  if(wantsRec){
+    postTxt+='\n🌿 We are open to practice suggestions — what do you think would work for us today?';
+  } else if(ciA.practice==='none'){
+    postTxt+='\n🌙 We are taking a rest day today.';
+  } else if(ciA.practice==='other'){
+    postTxt+='\n✨ We have our own thing planned today.';
+  } else if(pr){
+    postTxt+='\n🧘 We are planning: '+pr.name;
+  }
+
+  let h='';
+  if(streak>0){
+    h+='<div class="ci-streak"><span>'+( streak>=7?'🔥':'🌱')+'</span>';
+    h+='<span class="ci-streak-num">'+streak+'</span>';
+    h+='<span>'+(streak===1?'day':'days')+' in a row</span></div>';
+  }
+  h+='<div class="ci-date">'+ciTodayStr()+'</div>';
+
+  // card 01 — body feelings
+  h+='<div class="ci-card cactive" id="ciC1">';
+  h+='<div class="ci-num">01</div>';
+  h+='<h2 class="ci-q">How is your body feeling <em>right now?</em></h2>';
+  h+='<p class="ci-hint">Pick everything that fits — there are no wrong answers here.</p>';
+  h+='<div class="ci-chips" role="group" aria-label="How your body feels" id="ciChips">';
+  CI_FEELINGS.forEach(function(f){
+    var on=ciA.chips.indexOf(f.l)>=0;
+    h+='<button class="ci-chip'+(on?' on':'')+'" data-chip="'+f.l+'" role="checkbox" aria-checked="'+on+'">';
+    h+=f.e+' '+f.l+'</button>';
+  });
+  h+='</div></div>';
+
+  // card 02 — energy slider
+  var pct=((ciA.energy-1)/9)*100;
+  var sliderBg='linear-gradient(90deg,rgba(100,200,80,.45) '+pct+'%,rgba(240,230,204,.1) '+pct+'%)';
+  var emoji=ciA.energy<=2?'😴':ciA.energy<=4?'🌊':ciA.energy<=6?'🌱':ciA.energy<=8?'⚡':'🔥';
+  h+='<div class="ci-card cactive" id="ciC2">';
+  h+='<div class="ci-num">02</div>';
+  h+='<h2 class="ci-q">What\'s your <em>energy level</em> today?</h2>';
+  h+='<p class="ci-hint">Slide it to where you both land — child first, then you.</p>';
+  h+='<div class="ci-slider-row">';
+  h+='<div class="ci-slider-lbl">Low &amp; still</div>';
+  h+='<input type="range" class="ci-slider" id="ciSlider" min="1" max="10" value="'+ciA.energy+'" style="background:'+sliderBg+'" aria-label="Energy level '+ciA.energy+' out of 10"/>';
+  h+='<div class="ci-slider-lbl">High &amp; buzzy</div>';
+  h+='<div class="ci-slider-emoji" id="ciSliderEmoji">'+emoji+'</div>';
+  h+='</div>';
+  h+='<div class="ci-slider-val" id="ciSliderVal">'+ciA.energy+'/10</div>';
+  h+='</div>';
+
+  // card 03 — mind
+  h+='<div class="ci-card cactive" id="ciC3">';
+  h+='<div class="ci-num">03</div>';
+  h+='<h2 class="ci-q">What\'s taking up space in your <em>mind</em> today?</h2>';
+  h+='<p class="ci-hint">Big things, little things, anything floating around. Even "I don\'t know" is a good answer.</p>';
+  h+='<textarea class="wtarea" id="ciMind" rows="3" placeholder="There\'s a lot going on with… / Not much today / I can\'t quite name it…" aria-label="What is on your mind today">'+ciA.mind+'</textarea>';
+  h+='</div>';
+
+  // card 04 — noticed
+  h+='<div class="ci-card cactive" id="ciC4">';
+  h+='<div class="ci-num">04</div>';
+  h+='<h2 class="ci-q">One small thing you <em>noticed</em> this week that felt good?</h2>';
+  h+='<p class="ci-hint">It can be tiny — a moment, a smell, something your child did, a bit of quiet.</p>';
+  h+='<textarea class="wtarea" id="ciNotice" rows="3" placeholder="We noticed… / Something that made us smile was… / Even just…" aria-label="Something you noticed">'+ciA.notice+'</textarea>';
+  h+='</div>';
+
+  // card 05 — practice
+  h+='<div class="ci-card cactive" id="ciC5">';
+  h+='<div class="ci-num">05</div>';
+  h+='<h2 class="ci-q">What would feel good to <em>do together</em> today?</h2>';
+  h+='<p class="ci-hint">Choose the one that calls to you.</p>';
+  h+='<div class="ci-pgrid" role="radiogroup" aria-label="Choose a practice" id="ciPGrid">';
+  CI_PRACTICES.forEach(function(p){
+    var on=ciA.practice===p.id;
+    h+='<button class="ci-pbtn'+(on?' on':'')+'" data-pid="'+p.id+'" role="radio" aria-checked="'+on+'">';
+    h+='<div class="ci-picon">'+p.icon+'</div>';
+    h+='<div><div class="ci-pname">'+p.name+'</div><div class="ci-pdesc">'+p.desc+'</div></div></button>';
+  });
+  h+='</div></div>';
+
+  // card 06 — share (always visible, content depends on practice selection)
+  h+='<div class="ci-card cactive" id="ciC6">';
+  h+='<div class="ci-num">06</div>';
+  h+='<h2 class="ci-q">Share in <em>The Family Yoga Club</em></h2>';
+  if(!practiceSelected){
+    h+='<p class="ci-hint">Choose a practice above, then your check-in post will appear here ready to copy and share.</p>';
+  } else {
+    h+='<p class="ci-hint">Share your check-in — let the community see what you\'re up to and feel free to ask for practice suggestions.</p>';
+    h+='<div class="ci-post-card">';
+    h+='<div class="ci-post-lbl"><span>🌿</span> Your post — ready to copy</div>';
+    h+='<div class="ci-post-txt">'+postTxt+'</div>';
+    h+='<div class="ci-copied" id="ciCopied" aria-live="polite"></div>';
+    h+='<button class="ci-copy-btn" id="ciCopyBtn"><span>📋</span> Copy &amp; share in the community</button>';
+    h+='<a class="ci-open-btn" href="https://www.skool.com/family-yoga-with-natasha-7875" target="_blank" rel="noopener"><span>🌿</span> Open The Family Yoga Club</a>';
+    h+='<button class="btn btn-g" id="ciPrivateBtn" style="margin-top:6px;font-size:12px">🔒 Keep this just for us</button>';
+    h+='</div>';
+  }
+  h+='</div>';
+
+  // history
+  if(ciD.entries&&ciD.entries.length>0){
+    h+='<button class="ci-hist-toggle" id="ciHistBtn">'+(ciHistory?'Hide past check-ins':'See past check-ins ('+ciD.entries.length+')')+'</button>';
+    if(ciHistory){
+      h+='<div class="ci-history" role="region" aria-label="Past check-ins">';
+      h+='<div class="ci-hist-title">Your check-in journal</div>';
+      ciD.entries.forEach(function(e){
+        h+='<div class="ci-entry"><div class="ci-entry-date">'+e.date+'</div>';
+        if(e.feelings&&e.feelings.length)h+='<div class="ci-entry-lbl">Body</div><div class="ci-entry-val">'+e.feelings.join(', ')+'</div>';
+        if(e.energy)h+='<div class="ci-entry-lbl">Energy</div><div class="ci-entry-val">'+e.energy+'/10</div>';
+        if(e.mind)h+='<div class="ci-entry-lbl">On the mind</div><div class="ci-entry-val">'+e.mind+'</div>';
+        if(e.notice)h+='<div class="ci-entry-lbl">Noticed</div><div class="ci-entry-val">'+e.notice+'</div>';
+        if(e.practice)h+='<div class="ci-entry-lbl">Practice</div><div class="ci-entry-val">'+e.practice+'</div>';
+        h+='</div>';
+      });
+      h+='<button class="reset-btn" id="ciFullResetBtn" style="margin-top:4px">Clear all history</button>';
+      h+='</div>';
+    }
+  }
+
+  h+='<div class="ci-closing"><div class="ci-closing-fl">You showed up.</div><p class="ci-closing-txt">That\'s the whole practice — noticing, naming, and moving together.</p></div>';
+  h+='<button class="reset-btn" id="ciResetBtn">↺ Start today\'s check-in again</button>';
+
+  wrap.innerHTML=h;
+
+  // ── Wire events imperatively (no inline handlers in strings) ──
+
+  // Chips
+  wrap.querySelectorAll('.ci-chip').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var l=btn.getAttribute('data-chip');
+      var idx=ciA.chips.indexOf(l);
+      if(idx>=0)ciA.chips.splice(idx,1);else ciA.chips.push(l);
+      btn.classList.toggle('on',ciA.chips.indexOf(l)>=0);
+      btn.setAttribute('aria-checked',ciA.chips.indexOf(l)>=0);
+    });
+  });
+
+  // Slider — update display without re-render
+  var slider=document.getElementById('ciSlider');
+  if(slider){
+    slider.addEventListener('input',function(){
+      ciA.energy=Number(slider.value);
+      var p2=((ciA.energy-1)/9)*100;
+      slider.style.background='linear-gradient(90deg,rgba(100,200,80,.45) '+p2+'%,rgba(240,230,204,.1) '+p2+'%)';
+      var em=ciA.energy<=2?'😴':ciA.energy<=4?'🌊':ciA.energy<=6?'🌱':ciA.energy<=8?'⚡':'🔥';
+      var ev=document.getElementById('ciSliderEmoji');if(ev)ev.textContent=em;
+      var vv=document.getElementById('ciSliderVal');if(vv)vv.textContent=ciA.energy+'/10';
+    });
+  }
+
+  // Textareas — just save state, never re-render
+  var mindEl=document.getElementById('ciMind');
+  if(mindEl){
+    mindEl.addEventListener('input',function(){ciA.mind=mindEl.value;});
+    mindEl.addEventListener('focus',function(){mindEl.style.borderColor='rgba(200,151,58,.5)';});
+    mindEl.addEventListener('blur',function(){mindEl.style.borderColor='';});
+  }
+  var noticeEl=document.getElementById('ciNotice');
+  if(noticeEl){
+    noticeEl.addEventListener('input',function(){ciA.notice=noticeEl.value;});
+    noticeEl.addEventListener('focus',function(){noticeEl.style.borderColor='rgba(200,151,58,.5)';});
+    noticeEl.addEventListener('blur',function(){noticeEl.style.borderColor='';});
+  }
+
+  // Practice buttons — update in place then re-render card 06 only
+  wrap.querySelectorAll('.ci-pbtn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pid=btn.getAttribute('data-pid');
+      ciA.practice=pid;
+      // update button states in place
+      wrap.querySelectorAll('.ci-pbtn').forEach(function(b){
+        b.classList.toggle('on',b.getAttribute('data-pid')===pid);
+        b.setAttribute('aria-checked',b.getAttribute('data-pid')===pid);
+      });
+      // re-render card 06 only
+      ciRenderCard6();
+    });
+  });
+
+  // History toggle
+  var histBtn=document.getElementById('ciHistBtn');
+  if(histBtn){histBtn.addEventListener('click',function(){ciHistory=!ciHistory;ciRender();});}
+
+  // Full reset
+  var frBtn=document.getElementById('ciFullResetBtn');
+  if(frBtn){frBtn.addEventListener('click',function(){
+    if(!confirm('Clear all check-in history?'))return;
+    ciSave({entries:[],streak:0,lastDay:null});
+    ciD={entries:[],streak:0,lastDay:null};
+    ciHistory=false;ciRender();
+  });}
+
+  // Today reset
+  var resetBtn=document.getElementById('ciResetBtn');
+  if(resetBtn){resetBtn.addEventListener('click',function(){
+    if(!confirm("Clear today's check-in and start again?"))return;
+    ciA={chips:[],energy:5,mind:'',notice:'',practice:''};
+    ciRender();
+  });}
+
+  ciWireCard6();
+}
+
+// ── Render card 06 in place (after practice selected) ──
+function ciRenderCard6(){
+  var c6=document.getElementById('ciC6');
+  if(!c6)return;
+  var pr=CI_PRACTICES.find(function(x){return x.id===ciA.practice;});
+  var feelings=ciA.chips.length?ciA.chips.join(', '):'not sure yet';
+  var wantsRec=ciA.practice==='rec';
+  var postTxt='Hi everyone! 👋\n\nWe just did our Family Yoga Club check-in.\n\n';
+  postTxt+='⚡ Energy today: '+ciA.energy+'/10\n';
+  postTxt+='🫀 How we feel: '+feelings+'\n';
+  var nt=ciA.notice.trim();
+  if(nt)postTxt+='✨ Something we noticed: '+nt+'\n';
+  if(wantsRec){
+    postTxt+='\n🌿 We are open to practice suggestions — what do you think would work for us today?';
+  } else if(ciA.practice==='none'){
+    postTxt+='\n🌙 We are taking a rest day today.';
+  } else if(ciA.practice==='other'){
+    postTxt+='\n✨ We have our own thing planned today.';
+  } else if(pr){
+    postTxt+='\n🧘 We are planning: '+pr.name;
+  }
+
+  var h='<div class="ci-num">06</div>';
+  h+='<h2 class="ci-q">Share in <em>The Family Yoga Club</em></h2>';
+  h+='<p class="ci-hint">Share your check-in — let the community see what you\'re up to and feel free to ask for practice suggestions.</p>';
+  h+='<div class="ci-post-card">';
+  h+='<div class="ci-post-lbl"><span>🌿</span> Your post — ready to copy</div>';
+  h+='<div class="ci-post-txt" id="ciPostTxt">'+postTxt+'</div>';
+  h+='<div class="ci-copied" id="ciCopied" aria-live="polite"></div>';
+  h+='<button class="ci-copy-btn" id="ciCopyBtn"><span>📋</span> Copy &amp; share in the community</button>';
+  h+='<a class="ci-open-btn" href="https://www.skool.com/family-yoga-with-natasha-7875" target="_blank" rel="noopener"><span>🌿</span> Open The Family Yoga Club</a>';
+  h+='<button class="btn btn-g" id="ciPrivateBtn" style="margin-top:6px;font-size:12px">🔒 Keep this just for us</button>';
+  h+='</div>';
+  c6.innerHTML=h;
+  ciWireCard6();
+}
+
+// ── Wire card 06 buttons ──
+function ciWireCard6(){
+  var copyBtn=document.getElementById('ciCopyBtn');
+  if(copyBtn){
+    copyBtn.addEventListener('click',function(){
+      var txtEl=document.getElementById('ciPostTxt');
+      var txt=txtEl?txtEl.textContent:'';
+      function doCopy(){
+        var label=document.getElementById('ciCopied');
+        if(label){label.textContent='✓ Copied! Paste it into The Family Yoga Club.';}
+        copyBtn.textContent='✓ Copied!';
+        ciSaveEntry();
+        // after 2s show done state
+        setTimeout(function(){ciShowDone(true);},1800);
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(doCopy).catch(function(){ciCopyFallback(txt);doCopy();});
+      } else {ciCopyFallback(txt);doCopy();}
+    });
+  }
+
+  var privBtn=document.getElementById('ciPrivateBtn');
+  if(privBtn){
+    privBtn.addEventListener('click',function(){
+      ciSaveEntry();
+      ciShowDone(false);
+    });
+  }
+}
+
+function ciCopyFallback(txt){
+  var t=document.createElement('textarea');
+  t.value=txt;t.style.position='fixed';t.style.opacity='0';
+  document.body.appendChild(t);t.focus();t.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(t);
+}
+
+// ── Show done state in card 6 ──
+function ciShowDone(shared){
+  var c6=document.getElementById('ciC6');
+  if(!c6)return;
+  var h='<div style="text-align:center;padding:10px 0">';
+  h+='<div style="font-size:36px;margin-bottom:12px" aria-hidden="true">🌿</div>';
+  h+='<p style="font-family:\'Fraunces\',serif;font-size:18px;color:var(--fg);margin-bottom:8px">Check-in complete.</p>';
+  if(shared){
+    h+='<p style="font-family:\'Fraunces\',serif;font-style:italic;font-size:15px;color:var(--fg-m);line-height:1.6;margin-bottom:20px">Paste your post into The Family Yoga Club and see what the community says. 🙏</p>';
+    h+='<a class="ci-open-btn" href="https://www.skool.com/family-yoga-with-natasha-7875" target="_blank" rel="noopener" style="margin-bottom:10px"><span>🌿</span> Open The Family Yoga Club</a>';
+  } else {
+    h+='<p style="font-family:\'Fraunces\',serif;font-style:italic;font-size:15px;color:var(--fg-m);line-height:1.6;margin-bottom:20px">This one is just for you — held here, privately. Now go move together.</p>';
+  }
+  h+='<button class="btn btn-s" id="ciZapBtn" style="margin-bottom:10px">⚡ Want to zap some worries?</button>';
+  h+='<button class="btn btn-g" id="ciHomeBtn" style="font-size:12px">← Back to the jar</button>';
+  h+='</div>';
+  c6.innerHTML=h;
+  c6.className='ci-card cdone';
+
+  var zapBtn=document.getElementById('ciZapBtn');
+  if(zapBtn)zapBtn.addEventListener('click',function(){go('zap');});
+  var homeBtn=document.getElementById('ciHomeBtn');
+  if(homeBtn)homeBtn.addEventListener('click',function(){go('home');});
+}
+
+// ── Save entry to history ──
+function ciSaveEntry(){
+  var today=ciTodayKey();
+  var yd=ciYestKey();
+  var newStreak=1;
+  if(ciD.lastDay===yd)newStreak=(ciD.streak||0)+1;
+  else if(ciD.lastDay===today)newStreak=ciD.streak||1;
+  var pr=CI_PRACTICES.find(function(x){return x.id===ciA.practice;});
+  var entry={date:ciTodayStr(),key:today,feelings:ciA.chips.slice(),energy:ciA.energy,
+    mind:ciA.mind,notice:ciA.notice,practice:pr?pr.name:''};
+  var entries=(ciD.entries||[]).filter(function(e){return e.key!==today;});
+  ciD={entries:[entry].concat(entries).slice(0,60),streak:newStreak,lastDay:today};
+  ciSave(ciD);
+  markActivity();
+}
+
+// ═══ REVIEW ═══
+function renderRev(){
+  D.lastReview=Date.now();sv();
+  const wrap=document.getElementById('revwrap');wrap.innerHTML='';
+  const active=D.stones.filter(s=>s.status!=='gone');
+  // weekly note
+  const note=document.createElement('div');note.className='wk-note fu';
+  note.textContent='This is your weekly ritual — reading each worry together without rushing. Some will have grown quieter. Some won\'t have. Both are okay.';
+  wrap.appendChild(note);
+  if(!active.length){
+    const e=document.createElement('div');e.className='rev-empty';
+    e.textContent='The jar is empty right now.\n\nEvery worry you named deserved to be here.';
+    wrap.appendChild(e);return;
+  }
+  [...active].reverse().forEach(stone=>{
+    const card=document.createElement('div');card.className='scard fu';card.id='c'+stone.id;
+    card.innerHTML=`<div class="scard-top">
+      <div class="sdot" style="background:${stone.colour}"></div>
+      <div style="flex:1"><div class="swtext">${stone.text}</div><div class="smeta">${stone.date}</div></div>
+    </div>
+    <div class="rchoices" role="group" aria-label="How does this feel now?">
+      <button class="rcbtn${stone.status==='here'?' on':''}" onclick="setStat(${stone.id},'here',this)" aria-pressed="${stone.status==='here'}">Still here</button>
+      <button class="rcbtn${stone.status==='softer'?' on':''}" onclick="setStat(${stone.id},'softer',this)" aria-pressed="${stone.status==='softer'}">Getting softer</button>
+      <button class="rcbtn lg${stone.status==='letgo'?' on':''}" onclick="letGo(${stone.id})" aria-pressed="${stone.status==='letgo'}">Ready to let go ✦</button>
+    </div>`;
+    wrap.appendChild(card);
+  });
+}
+function setStat(id,st,btn){
+  D.stones=D.stones.map(s=>s.id===id?{...s,status:st}:s);sv();
+  const card=document.getElementById('c'+id);
+  if(card){card.querySelectorAll('.rcbtn').forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});btn.classList.add('on');btn.setAttribute('aria-pressed','true');}
+  ann(st==='softer'?'Marked as getting softer.':'Still here — that\'s okay.');
+}
+function letGo(id){
+  const card=document.getElementById('c'+id);if(!card)return;
+  clink(1.55);card.classList.add('crumbling');ann('Worry released.');
+  setTimeout(()=>{
+    D.stones=D.stones.map(s=>s.id===id?{...s,status:'gone'}:s);sv();card.remove();
+    if(!document.querySelectorAll('.scard').length){
+      const e=document.createElement('div');e.className='rev-empty';
+      e.textContent='All caught up. Every worry you released took courage.';
+      document.getElementById('revwrap').appendChild(e);
+    }
+  },680);
+}
+
+// ═══ ZAP ═══
+let zRun=false,zSc=0,zT=30,zRAF=null,zSt=[],zCanvas=null,zCtx=null,zPend=0;
+function initZap(){
+  zCanvas=document.getElementById('zc');zCtx=zCanvas.getContext('2d');
+  resizeZ();window.addEventListener('resize',resizeZ);
+  renderLB();
+  document.getElementById('zov').style.display='flex';
+  document.getElementById('zovt').textContent='Zap the Worries!';
+  document.getElementById('zovd').textContent='Tap every stone before time runs out. 30 seconds. Go!';
+  document.getElementById('zfs').style.display='none';
+  document.getElementById('zfm').style.display='none';
+  document.getElementById('nirow').style.display='none';
+  const mb=document.getElementById('zmb');mb.textContent="Let's go! ⚡";mb.onclick=startZap;
+}
+function resizeZ(){if(!zCanvas)return;zCanvas.width=zCanvas.offsetWidth;zCanvas.height=zCanvas.offsetHeight;}
+function renderLB(){
+  const lb=document.getElementById('lbdisp');
+  lb.innerHTML='<div class="lb-title">⚡ High Scores</div>';
+  const sc=D.leaderboard||[];
+  if(!sc.length){lb.innerHTML+='<div class="lb-empty">No scores yet — be the first!</div>';return;}
+  ['🥇','🥈','🥉'].slice(0,sc.length).forEach((m,i)=>{
+    const row=document.createElement('div');row.className='lb-row';
+    row.innerHTML=`<div class="lb-rank">${m}</div><div class="lb-name">${sc[i].name}</div><div class="lb-score">${sc[i].score}</div>`;
+    lb.appendChild(row);
+  });
+}
+function startZap(){
+  document.getElementById('zov').style.display='none';
+  zSc=0;zT=30;zRun=true;zSt=[];
+  spawnZ();
+  document.getElementById('zsd').textContent='0';
+  document.getElementById('ztd').textContent='0:30';
+  document.getElementById('ztd').classList.remove('urgent');
+  zCanvas.addEventListener('pointerdown',onZTap);
+  let last=performance.now(),elapsed=0;
+  function loop(now){
+    if(!zRun)return;
+    const dt=Math.min((now-last)/1000,.1);last=now;elapsed+=dt;
+    zT=Math.max(0,30-elapsed);
+    const td=document.getElementById('ztd');
+    td.textContent='0:'+Math.ceil(zT).toString().padStart(2,'0');
+    if(zT<=5)td.classList.add('urgent');else td.classList.remove('urgent');
+    if(zT<=0){endZap();return;}
+    updZ(dt);drawZ();
+    zRAF=requestAnimationFrame(loop);
+  }
+  zRAF=requestAnimationFrame(loop);
+}
+function spawnZ(){
+  const w=zCanvas.width,h=zCanvas.height;
+  const pool=D.stones.filter(s=>s.status!=='gone');
+  const n=Math.max(6,Math.min((pool.length||0)+5,15));
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,sp=50+Math.random()*85;
+    const src=pool.length?pool[i%pool.length]:null;
+    zSt.push({
+      x:80+Math.random()*(w-160),y:80+Math.random()*(h-160),
+      vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,
+      rx:20+Math.random()*12,seed:Math.floor(Math.random()*97),
+      col:src?src.colour:COLS[Math.floor(Math.random()*COLS.length)].c,
+      alive:true,zapping:false,zp:0,wobble:Math.random()*Math.PI*2,ws:.8+Math.random()*1.8,
+    });
+  }
+}
+function updZ(dt){
+  const w=zCanvas.width,h=zCanvas.height;
+  zSt.forEach(s=>{
+    if(!s.alive)return;
+    s.wobble+=s.ws*dt;s.x+=s.vx*dt;s.y+=s.vy*dt;
+    const spd=Math.hypot(s.vx,s.vy),tgt=65+((30-zT)/30)*75;
+    if(spd<tgt){s.vx*=1.013;s.vy*=1.013;}
+    if(s.x-s.rx<0){s.x=s.rx;s.vx=Math.abs(s.vx);}
+    if(s.x+s.rx>w){s.x=w-s.rx;s.vx=-Math.abs(s.vx);}
+    if(s.y-s.rx<0){s.y=s.rx;s.vy=Math.abs(s.vy);}
+    if(s.y+s.rx>h){s.y=h-s.rx;s.vy=-Math.abs(s.vy);}
+    if(s.zapping){s.zp+=dt*3.8;if(s.zp>=1)s.alive=false;}
+  });
+  if(zSt.filter(s=>s.alive).length<3){
+    const a=Math.random()*Math.PI*2,sp=70+Math.random()*95;
+    zSt.push({x:60+Math.random()*(zCanvas.width-120),y:60+Math.random()*(zCanvas.height-120),
+      vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rx:18+Math.random()*12,seed:Math.floor(Math.random()*97),
+      col:COLS[Math.floor(Math.random()*COLS.length)].c,alive:true,zapping:false,zp:0,wobble:0,ws:1+Math.random()*1.8});
+  }
+}
+function drawZ(){
+  const ctx=zCtx,w=zCanvas.width,h=zCanvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#0d1a14';ctx.fillRect(0,0,w,h);
+  // grass strip
+  ctx.fillStyle='rgba(30,48,40,.35)';ctx.fillRect(0,h*.86,w,h*.14);
+  zSt.forEach(s=>{
+    if(!s.alive)return;
+    const wx=Math.sin(s.wobble)*2.5,wy=Math.cos(s.wobble*1.3)*2;
+    const sc=s.zapping?1-s.zp:.99;
+    ctx.save();ctx.translate(s.x+wx,s.y+wy);ctx.scale(sc,sc*.72);
+    // shadow
+    ctx.fillStyle='rgba(0,0,0,.3)';
+    ctx.beginPath();ctx.ellipse(2,s.rx*.56,s.rx*.68,s.rx*.25,0,0,Math.PI*2);ctx.fill();
+    // rock
+    const pts=rockPts(0,0,s.rx,s.rx,s.seed);
+    ptsToCanvas(ctx,pts);
+    ctx.fillStyle=s.col;ctx.fill();
+    ctx.strokeStyle=darken(s.col,.6);ctx.lineWidth=1;ctx.stroke();
+    // facet
+    const fa=s.seed*.8;
+    ctx.strokeStyle=darken(s.col,.52);ctx.lineWidth=.8;ctx.globalAlpha=.5;
+    ctx.beginPath();ctx.moveTo(-s.rx*.25+Math.cos(fa)*s.rx*.18,-s.rx*.05);
+    ctx.lineTo(s.rx*.18+Math.cos(fa+1.1)*s.rx*.12,s.rx*.26);ctx.stroke();
+    // scratch
+    ctx.lineWidth=.55;ctx.globalAlpha=.35;
+    ctx.beginPath();ctx.moveTo(s.rx*.04,-s.rx*.2);ctx.lineTo(-s.rx*.17,s.rx*.08);ctx.stroke();
+    ctx.globalAlpha=1;
+    // matte highlight
+    const hlPts=rockPts(-s.rx*.22,-s.rx*.18,s.rx*.26,s.rx*.2,s.seed+11);
+    ptsToCanvas(ctx,hlPts);ctx.fillStyle=lighten(s.col,.18);ctx.globalAlpha=.3;ctx.fill();ctx.globalAlpha=1;
+    // grit dots
+    for(let i=0;i<3;i++){
+      ctx.beginPath();
+      ctx.arc(Math.sin(s.seed*1.4+i*2.2)*s.rx*.32,Math.cos(s.seed*2.6+i*1.7)*s.rx*.28,.7,0,Math.PI*2);
+      ctx.fillStyle=darken(s.col,.48);ctx.globalAlpha=.4;ctx.fill();ctx.globalAlpha=1;
+    }
+    // zap burst
+    if(s.zapping){
+      ctx.globalAlpha=1-s.zp;
+      const gr=ctx.createRadialGradient(0,0,0,0,0,s.rx*2.4);
+      gr.addColorStop(0,'rgba(255,215,70,.9)');gr.addColorStop(1,'rgba(255,170,20,0)');
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(0,0,s.rx*2.4,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='rgba(255,195,40,.85)';ctx.lineWidth=2.2;
+      for(let i=0;i<6;i++){
+        const ca=(i/6)*Math.PI*2+s.seed*.35;
+        ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(ca)*s.rx*1.7,Math.sin(ca)*s.rx*1.7);ctx.stroke();
+      }
+      ctx.globalAlpha=1;
+    }
+    ctx.restore();
+  });
+}
+function onZTap(e){
+  if(!zRun)return;
+  const r=zCanvas.getBoundingClientRect();
+  const px=(e.clientX-r.left)*(zCanvas.width/r.width);
+  const py=(e.clientY-r.top)*(zCanvas.height/r.height);
+  zSt.forEach(s=>{
+    if(!s.alive||s.zapping)return;
+    if(Math.hypot(s.x-px,s.y-py)<s.rx+16){
+      s.zapping=true;zSc++;
+      document.getElementById('zsd').textContent=zSc;
+      zapSnd();
+    }
+  });
+}
+const ZQUOTES=[
+  'Worry is just a cloud passing through your mind — it won\'t stay forever. ☁️',
+  'You are bigger and stronger than your worries.',
+  'Even busy minds deserve rest.',
+  'Your breath can help your body feel safe again.',
+  'It\'s okay to feel worried sometimes — you are not alone.',
+  'Calm is already inside you — we just practise finding it.',
+  'You don\'t have to fix every worry right now.',
+  'Little by little, your body can learn to relax.',
+  'When your mind feels noisy, your breath can be your quiet place.',
+];
+const ZMSGS=[
+  ['You zapped {n}!',''],
+  ['Wow — {n} in 30 seconds!',''],
+  ['{n} worries zapped!',''],
+  ['Score: {n}!',''],
+  ['{n}! Not bad at all.',''],
+  ['Amazing — {n}!',''],
+];
+function endZap(){
+  zRun=false;cancelAnimationFrame(zRAF);zCanvas.removeEventListener('pointerdown',onZTap);
+  winSnd();zPend=zSc;
+  const ov=document.getElementById('zov');ov.style.display='flex';
+  const pick=ZMSGS[Math.floor(Math.random()*ZMSGS.length)];
+  const quote=ZQUOTES[Math.floor(Math.random()*ZQUOTES.length)];
+  document.getElementById('zovt').textContent=pick[0].replace('{n}',zSc);
+  document.getElementById('zovd').textContent='';
+  document.getElementById('zfs').style.display='block';document.getElementById('zfs').textContent=zSc;
+  document.getElementById('zfm').style.display='block';
+  document.getElementById('zfm').innerHTML=`<span style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--fg-m);line-height:1.6;display:block;margin-bottom:10px;">"${quote}"</span>`;
+  renderLB();
+  const lb=D.leaderboard||[];
+  const q=lb.length<3||zSc>(lb[lb.length-1]?.score||0);
+  document.getElementById('nirow').style.display=q?'flex':'none';
+  if(q)setTimeout(()=>document.getElementById('pname').focus(),180);
+  const mb=document.getElementById('zmb');mb.textContent='Play again ⚡';mb.onclick=()=>{initZap();startZap();};
+}
+function saveScore(){
+  const name=document.getElementById('pname').value.trim()||'Anonymous';
+  D.leaderboard=D.leaderboard||[];
+  D.leaderboard.push({name,score:zPend,date:new Date().toLocaleDateString()});
+  D.leaderboard.sort((a,b)=>b.score-a.score);
+  D.leaderboard=D.leaderboard.slice(0,3);
+  sv();document.getElementById('nirow').style.display='none';renderLB();ann('Score saved!');
+}
+
+// ═══ INIT ═══
+window.addEventListener('resize',()=>{drawStars();drawGrass();if(zCanvas)resizeZ();});
+renderHome();
+</script>
+</body>
+</html>
